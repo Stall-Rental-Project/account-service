@@ -1,6 +1,6 @@
 package com.srs.account.entity;
 
-import com.srs.common.common.util.TimestampUtil;
+import com.srs.common.util.TimestampUtil;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
