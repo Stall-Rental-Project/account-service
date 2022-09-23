@@ -39,6 +39,7 @@ public class UserGrpcServiceImpl implements UserGrpcService {
         marketMessage.setMappedLocation("hue city");
         marketMessage.setStreet("Ngo Si Lien");
         demoKafkaProducer.sendMessageWhenCallUserApi(marketMessage, principal);
+        userRepository.save(userGrpcMapper.createUser(request));
         return NoContentResponse.newBuilder()
                 .setSuccess(true)
                 .build();
