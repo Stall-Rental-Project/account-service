@@ -27,7 +27,7 @@ public class UserEntity implements Serializable {
     private UUID userId;
 
     private String email;
-    private String externalId;
+//    private String externalId;
     private String password;
     private String firstName;
     private String middleName;
@@ -35,7 +35,8 @@ public class UserEntity implements Serializable {
 
     private int status;
 
-    private String divisions;
+//    in scope we don't need it now
+//   private String divisions;
 
     private String marketCodes;
 

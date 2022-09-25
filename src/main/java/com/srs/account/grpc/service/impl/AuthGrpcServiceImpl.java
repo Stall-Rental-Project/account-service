@@ -71,12 +71,12 @@ public class AuthGrpcServiceImpl implements AuthGrpcService {
         additionalClaims.putIfAbsent(FIRST_NAME, user.getFirstName());
         additionalClaims.putIfAbsent(LAST_NAME, user.getLastName());
 
-        var divisions = Arrays.stream(user.getDivisions().split(","))
-                .filter(StringUtils::isNotBlank)
-                .map(Integer::parseInt)
-                .collect(Collectors.toList());
-        additionalClaims.putIfAbsent(DIVISIONS, divisions);
-
+//        var divisions = Arrays.stream(user.getDivisions().split(","))
+//                .filter(StringUtils::isNotBlank)
+//                .map(Integer::parseInt)
+//                .collect(Collectors.toList());
+//        additionalClaims.putIfAbsent(DIVISIONS, divisions);
+//
         var marketCodes = Arrays.stream(requireNonNullElse(user.getMarketCodes(), "").split(","))
                 .filter(StringUtils::isNotBlank)
                 .collect(Collectors.toList());

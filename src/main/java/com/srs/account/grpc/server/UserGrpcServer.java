@@ -6,6 +6,7 @@ import com.market.account.UserServiceGrpc;
 import com.market.common.NoContentResponse;
 import com.market.common.PageResponse;
 import com.srs.account.grpc.service.UserGrpcService;
+import com.srs.proto.intercepter.AuthGrpcInterceptor;
 import com.srs.proto.provider.GrpcPrincipalProvider;
 import com.srs.proto.util.GrpcExceptionUtil;
 import io.grpc.stub.StreamObserver;
@@ -13,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import net.devh.boot.grpc.server.service.GrpcService;
 
-@GrpcService
+@GrpcService(interceptors = AuthGrpcInterceptor.class)
 @RequiredArgsConstructor
 @Log4j2
 public class UserGrpcServer extends UserServiceGrpc.UserServiceImplBase {

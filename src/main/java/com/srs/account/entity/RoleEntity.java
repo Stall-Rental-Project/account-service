@@ -36,12 +36,6 @@ public class RoleEntity {
     private int status;
 
     @Column(nullable = false)
-    private UUID initiatorId;
-
-    @Column(nullable = false)
-    private UUID modifierId;
-
-    @Column(nullable = false)
     private Timestamp createdAt;
 
     @Column
@@ -56,9 +50,5 @@ public class RoleEntity {
     public void prePersist() {
         this.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         this.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-    }
-
-    public RoleEntity(UUID roleId) {
-        this.roleId = roleId;
     }
 }

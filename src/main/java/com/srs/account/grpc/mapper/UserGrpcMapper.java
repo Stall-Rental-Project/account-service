@@ -18,13 +18,10 @@ public class UserGrpcMapper implements BaseGrpcMapper<UserEntity, User> {
         return User.newBuilder()
                 .setUserId(entity.getUserId().toString())
                 .setEmail(entity.getEmail())
-                .setExternalId(entity.getExternalId())
                 .setFirstName(requireNonNullElse(entity.getFirstName(), ""))
                 .setMiddleName(requireNonNullElse(entity.getMiddleName(), ""))
                 .setLastName(requireNonNullElse(entity.getLastName(), ""))
-                .setStatusValue(entity.getStatus())
-                .addAllMarketCodes(UserUtil.nativeToGrpcMarketCodes(entity.getMarketCodes()))
-                .addAllDivisions(UserUtil.nativeToGrpcMarketDivisions(entity.getDivisions()));
+                .setStatusValue(entity.getStatus());
     }
 
     @Override
@@ -39,7 +36,6 @@ public class UserGrpcMapper implements BaseGrpcMapper<UserEntity, User> {
         user.setLastName(request.getLastName());
         user.setPassword("P1@zz@2022");
         user.setMiddleName(request.getMiddleName());
-        user.setExternalId("0221e7fb-54ef-4f20-b4d3-af95e53ed662");
         return user;
     }
 

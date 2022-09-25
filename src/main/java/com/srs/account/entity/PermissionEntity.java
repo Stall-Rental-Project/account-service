@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.UUID;
 
 @Entity
@@ -37,4 +38,21 @@ public class PermissionEntity {
     private PermissionCategoryEntity permissionCategory;
 
     private int displayOrder;
+
+    @Column(nullable = false)
+    private Timestamp createdAt;
+
+    @Column
+    private Timestamp updatedAt;
+
+    @PreUpdate
+    public void preUpdate(){
+        this.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+    }
+
+    @PrePersist
+    public void prePersist(){
+        this.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        this.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+    }
 }
