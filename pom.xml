@@ -21,18 +21,6 @@
 		<common.version>DEFECT-SNAPSHOT</common.version>
 	</properties>
 
-	<repositories>
-		<repository>
-			<id>mvn-repo</id>
-			<url>https://rawgit.com/ngohoang211020/market-common/master</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
 	<dependencies>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
