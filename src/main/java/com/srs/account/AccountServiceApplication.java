@@ -11,7 +11,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 @SpringBootApplication
-@EnableEurekaClient
+//@EnableEurekaClient
 public class AccountServiceApplication {
 
     private static final Logger logger = LoggerFactory.getLogger(AccountServiceApplication.class);
