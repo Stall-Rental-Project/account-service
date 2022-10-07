@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  account-service-dev:
+    image: mhmarket/account:latest
+    container_name: account-service
+    ports:
+      - "8080:8080"
+    environment:
+      CLOUD_CONFIG_URL: http://103.162.20.141:8888
+      CLOUD_CONFIG_PROFILE: dev
+      CLOUD_CONFIG_LABEL: master
+    network_mode: host
+    restart: unless-stopped
+    dns:
+      - 192.168.200.4
+      - 8.8.8.8
+networks:
+  mhmarket-account-dev:
+    driver: bridge
