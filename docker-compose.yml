@@ -9,7 +9,6 @@ services:
       CLOUD_CONFIG_URL: http://103.162.20.141:8888
       CLOUD_CONFIG_PROFILE: dev
       CLOUD_CONFIG_LABEL: master
-    network_mode: host
     restart: unless-stopped
     dns:
       - 192.168.200.4
