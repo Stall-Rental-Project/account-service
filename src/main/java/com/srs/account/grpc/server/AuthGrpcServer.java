@@ -19,6 +19,7 @@ public class AuthGrpcServer extends AuthServiceGrpc.AuthServiceImplBase {
     @Override
     public void login(LoginRequest request, StreamObserver<LoginResponse> responseObserver) {
         try {
+            log.info("Password is {}", request.getPassword());
             responseObserver.onNext(authGrpcService.login(request));
             responseObserver.onCompleted();
         } catch (Exception e) {
