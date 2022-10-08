@@ -10,9 +10,11 @@ services:
       CLOUD_CONFIG_PROFILE: dev
       CLOUD_CONFIG_LABEL: master
     restart: unless-stopped
+    networks:
+      - mh-network
     dns:
       - 192.168.200.4
       - 8.8.8.8
 networks:
   mhmarket-account-dev:
-    driver: bridge
+    driver: mh-network
