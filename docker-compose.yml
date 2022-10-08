@@ -5,7 +5,6 @@ services:
     container_name: account-service
     ports:
       - "8080:8080"
-      - "9565:9565"
     environment:
 
       CLOUD_CONFIG_URL: http://103.162.20.141:8888
