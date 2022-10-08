@@ -4,13 +4,11 @@ services:
     image: mhmarket/account:latest
     container_name: account-service
     ports:
-      - "8080:8080"
+      - "9565:9565"
     environment:
-
       CLOUD_CONFIG_URL: http://103.162.20.141:8888
       CLOUD_CONFIG_PROFILE: dev
       CLOUD_CONFIG_LABEL: master
-
     restart: unless-stopped
     networks:
       - mh-network
