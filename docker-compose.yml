@@ -9,7 +9,6 @@ services:
       CLOUD_CONFIG_URL: http://103.162.20.141:8888
       CLOUD_CONFIG_PROFILE: dev
       CLOUD_CONFIG_LABEL: master
-      eureka_client_serviceUrl.defaultZone: http://103.162.20.141:8761/eureka/
 
     restart: unless-stopped
     networks:
