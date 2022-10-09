@@ -5,9 +5,11 @@ import com.market.account.LoginRequest;
 import com.market.account.LoginResponse;
 import com.market.common.Error;
 import com.market.common.ErrorCode;
+import com.srs.account.entity.PermissionEntity;
 import com.srs.account.entity.RoleEntity;
 import com.srs.account.entity.UserEntity;
 import com.srs.account.grpc.service.AuthGrpcService;
+import com.srs.account.repository.PermissionRepository;
 import com.srs.account.repository.RoleRepository;
 import com.srs.account.repository.UserRepository;
 import com.srs.proto.constant.GrpcConstant;
@@ -33,6 +35,9 @@ import static java.util.Objects.requireNonNullElse;
 public class AuthGrpcServiceImpl implements AuthGrpcService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+
+    private final PermissionRepository permissionRepository;
+
     @Override
     public LoginResponse login(LoginRequest request) {
         var email = request.getUsername().trim().toLowerCase();
@@ -81,6 +86,12 @@ public class AuthGrpcServiceImpl implements AuthGrpcService {
                 .filter(StringUtils::isNotBlank)
                 .collect(Collectors.toList());
         additionalClaims.putIfAbsent(MARKET_CODES, marketCodes);
+
+        var permissions=permissionRepository.findAllByUserId(user.getUserId()).stream()
+                .map(PermissionEntity::getCode)
+                .collect(Collectors.toSet());
+
+        additionalClaims.putIfAbsent(PERMISSIONS, permissions);
 
         var token = Jwts.builder()
                 .setHeaderParam("alg", "HS256")

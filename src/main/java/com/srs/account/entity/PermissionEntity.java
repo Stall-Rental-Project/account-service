@@ -37,8 +37,6 @@ public class PermissionEntity {
     @JoinColumn(name = "permission_category_id", nullable = false)
     private PermissionCategoryEntity permissionCategory;
 
-    private int displayOrder;
-
     @Column(nullable = false)
     private Timestamp createdAt;
 
