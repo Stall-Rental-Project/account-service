@@ -1,10 +1,10 @@
 package com.srs.account.grpc.service.impl;
 
-import com.market.account.AuthResponse;
-import com.market.account.LoginRequest;
-import com.market.account.LoginResponse;
 import com.market.common.Error;
 import com.market.common.ErrorCode;
+import com.srs.account.AuthResponse;
+import com.srs.account.LoginRequest;
+import com.srs.account.LoginResponse;
 import com.srs.account.entity.PermissionEntity;
 import com.srs.account.entity.RoleEntity;
 import com.srs.account.entity.UserEntity;
@@ -25,8 +25,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.stream.Collectors;
-import static com.srs.proto.constant.GrpcConstant.*;
 
+import static com.srs.proto.constant.GrpcConstant.*;
 import static java.util.Objects.requireNonNullElse;
 
 @Service
@@ -87,7 +87,7 @@ public class AuthGrpcServiceImpl implements AuthGrpcService {
                 .collect(Collectors.toList());
         additionalClaims.putIfAbsent(MARKET_CODES, marketCodes);
 
-        var permissions=permissionRepository.findAllByUserId(user.getUserId()).stream()
+        var permissions = permissionRepository.findAllByUserId(user.getUserId()).stream()
                 .map(PermissionEntity::getCode)
                 .collect(Collectors.toSet());
 

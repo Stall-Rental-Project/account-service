@@ -1,14 +1,14 @@
 package com.srs.account.grpc.server;
 
-import com.market.account.GetUserResponse;
-import com.market.account.ListUsersRequest;
-import com.market.account.UpsertUserRequest;
-import com.market.account.UserServiceGrpc;
-import com.market.common.FindByCodeRequest;
-import com.market.common.ListResponse;
+import com.market.common.FindByIdRequest;
+import com.market.common.FindByIdsRequest;
 import com.market.common.NoContentResponse;
 import com.market.common.PageResponse;
-import com.srs.account.grpc.service.UserGrpcService;
+import com.srs.account.GetRoleResponse;
+import com.srs.account.ListRoleRequest;
+import com.srs.account.RoleServiceGrpc;
+import com.srs.account.UpsertRoleRequest;
+import com.srs.account.grpc.service.RoleGrpcService;
 import com.srs.proto.intercepter.AuthGrpcInterceptor;
 import com.srs.proto.provider.GrpcPrincipalProvider;
 import com.srs.proto.util.GrpcExceptionUtil;
@@ -20,14 +20,14 @@ import net.devh.boot.grpc.server.service.GrpcService;
 @GrpcService(interceptors = AuthGrpcInterceptor.class)
 @RequiredArgsConstructor
 @Log4j2
-public class UserGrpcServer extends UserServiceGrpc.UserServiceImplBase {
-    private final UserGrpcService userGrpcService;
+public class RoleGrpcServer extends RoleServiceGrpc.RoleServiceImplBase {
+    private final RoleGrpcService roleGrpcService;
 
     @Override
-    public void listUsers(ListUsersRequest request, StreamObserver<PageResponse> responseObserver) {
+    public void listRoles(ListRoleRequest request, StreamObserver<PageResponse> responseObserver) {
         try {
             var principal = GrpcPrincipalProvider.getGrpcPrincipal();
-            responseObserver.onNext(userGrpcService.listUsers(request, principal));
+            responseObserver.onNext(roleGrpcService.listRoles(request, principal));
             responseObserver.onCompleted();
         } catch (Exception e) {
             responseObserver.onNext(PageResponse.newBuilder()
@@ -36,61 +36,17 @@ public class UserGrpcServer extends UserServiceGrpc.UserServiceImplBase {
                     .build());
             responseObserver.onCompleted();
             throw e;
-        }    }
-
-    @Override
-    public void createUser(UpsertUserRequest request, StreamObserver<NoContentResponse> responseObserver) {
-        try {
-            var principal = GrpcPrincipalProvider.getGrpcPrincipal();
-            responseObserver.onNext(userGrpcService.createUser(request, principal));
-            responseObserver.onCompleted();
-        } catch (Exception e) {
-            responseObserver.onNext(NoContentResponse.newBuilder()
-                    .setSuccess(false)
-                    .setError(GrpcExceptionUtil.asGrpcError(e))
-                    .build());
-            responseObserver.onCompleted();
         }
     }
 
     @Override
-    public void updateUser(UpsertUserRequest request, StreamObserver<NoContentResponse> responseObserver) {
+    public void getRole(FindByIdRequest request, StreamObserver<GetRoleResponse> responseObserver) {
         try {
             var principal = GrpcPrincipalProvider.getGrpcPrincipal();
-            responseObserver.onNext(userGrpcService.updateUser(request, principal));
+            responseObserver.onNext(roleGrpcService.getRole(request, principal));
             responseObserver.onCompleted();
         } catch (Exception e) {
-            responseObserver.onNext(NoContentResponse.newBuilder()
-                    .setSuccess(false)
-                    .setError(GrpcExceptionUtil.asGrpcError(e))
-                    .build());
-            responseObserver.onCompleted();
-        }
-    }
-
-    @Override
-    public void listUsersByEmail(FindByCodeRequest request, StreamObserver<ListResponse> responseObserver) {
-        try {
-            var principal = GrpcPrincipalProvider.getGrpcPrincipal();
-            responseObserver.onNext(userGrpcService.listUsersByEmail(request, principal));
-            responseObserver.onCompleted();
-        } catch (Exception e) {
-            responseObserver.onNext(ListResponse.newBuilder()
-                    .setSuccess(false)
-                    .setError(GrpcExceptionUtil.asGrpcError(e))
-                    .build());
-            responseObserver.onCompleted();
-            throw e;
-        }    }
-
-    @Override
-    public void getUser(FindByCodeRequest request, StreamObserver<GetUserResponse> responseObserver) {
-        try {
-            var principal = GrpcPrincipalProvider.getGrpcPrincipal();
-            responseObserver.onNext(userGrpcService.getUser(request, principal));
-            responseObserver.onCompleted();
-        } catch (Exception e) {
-            responseObserver.onNext(GetUserResponse.newBuilder()
+            responseObserver.onNext(GetRoleResponse.newBuilder()
                     .setSuccess(false)
                     .setError(GrpcExceptionUtil.asGrpcError(e))
                     .build());
@@ -100,10 +56,10 @@ public class UserGrpcServer extends UserServiceGrpc.UserServiceImplBase {
     }
 
     @Override
-    public void deleteUser(FindByCodeRequest request, StreamObserver<NoContentResponse> responseObserver) {
+    public void createRole(UpsertRoleRequest request, StreamObserver<NoContentResponse> responseObserver) {
         try {
             var principal = GrpcPrincipalProvider.getGrpcPrincipal();
-            responseObserver.onNext(userGrpcService.deleteUser(request, principal));
+            responseObserver.onNext(roleGrpcService.createRole(request, principal));
             responseObserver.onCompleted();
         } catch (Exception e) {
             responseObserver.onNext(NoContentResponse.newBuilder()
@@ -112,7 +68,54 @@ public class UserGrpcServer extends UserServiceGrpc.UserServiceImplBase {
                     .build());
             responseObserver.onCompleted();
             throw e;
-        }    }
+        }
+    }
 
+    @Override
+    public void updateRole(UpsertRoleRequest request, StreamObserver<NoContentResponse> responseObserver) {
+        try {
+            var principal = GrpcPrincipalProvider.getGrpcPrincipal();
+            responseObserver.onNext(roleGrpcService.updateRole(request, principal));
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            responseObserver.onNext(NoContentResponse.newBuilder()
+                    .setSuccess(false)
+                    .setError(GrpcExceptionUtil.asGrpcError(e))
+                    .build());
+            responseObserver.onCompleted();
+            throw e;
+        }
+    }
 
+    @Override
+    public void deleteRole(FindByIdRequest request, StreamObserver<NoContentResponse> responseObserver) {
+        try {
+            var principal = GrpcPrincipalProvider.getGrpcPrincipal();
+            responseObserver.onNext(roleGrpcService.deleteRole(request, principal));
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            responseObserver.onNext(NoContentResponse.newBuilder()
+                    .setSuccess(false)
+                    .setError(GrpcExceptionUtil.asGrpcError(e))
+                    .build());
+            responseObserver.onCompleted();
+            throw e;
+        }
+    }
+
+    @Override
+    public void findAllByIds(FindByIdsRequest request, StreamObserver<PageResponse> responseObserver) {
+        try {
+            var principal = GrpcPrincipalProvider.getGrpcPrincipal();
+            responseObserver.onNext(roleGrpcService.findAllByIds(request, principal));
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            responseObserver.onNext(PageResponse.newBuilder()
+                    .setSuccess(false)
+                    .setError(GrpcExceptionUtil.asGrpcError(e))
+                    .build());
+            responseObserver.onCompleted();
+            throw e;
+        }
+    }
 }

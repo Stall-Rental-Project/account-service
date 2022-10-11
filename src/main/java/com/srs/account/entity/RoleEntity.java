@@ -51,4 +51,7 @@ public class RoleEntity {
         this.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         this.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
     }
+    public RoleEntity(UUID roleId) {
+        this.roleId = roleId;
+    }
 }

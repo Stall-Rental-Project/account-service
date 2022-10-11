@@ -7,13 +7,16 @@ import com.srs.account.ListPermissionCategoryRequest;
 import com.srs.account.ListPermissionsRequest;
 import com.srs.account.PermissionServiceGrpc;
 import com.srs.account.grpc.service.PermissionGrpcService;
+import com.srs.proto.intercepter.AuthGrpcInterceptor;
 import com.srs.proto.util.GrpcExceptionUtil;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import net.devh.boot.grpc.server.service.GrpcService;
 
-@GrpcService
+@GrpcService(interceptors = AuthGrpcInterceptor.class)
 @RequiredArgsConstructor
+@Log4j2
 public class PermissionGrpcServer extends PermissionServiceGrpc.PermissionServiceImplBase {
     private final PermissionGrpcService permissionGrpcService;
 
