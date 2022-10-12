@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import net.devh.boot.grpc.server.service.GrpcService;
 
-@GrpcService(interceptors = AuthGrpcInterceptor.class)
+@GrpcService
 @RequiredArgsConstructor
 @Log4j2
 public class PermissionGrpcServer extends PermissionServiceGrpc.PermissionServiceImplBase {
