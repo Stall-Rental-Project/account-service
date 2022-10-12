@@ -1,16 +1,22 @@
 package com.srs.account.grpc.service.impl;
 
+import com.google.protobuf.Any;
 import com.market.common.FindByIdRequest;
 import com.market.common.ListResponse;
 import com.srs.account.*;
+import com.srs.account.grpc.mapper.PermissionCategoryGrpcMapper;
+import com.srs.account.grpc.mapper.PermissionGrpcMapper;
 import com.srs.account.grpc.service.PermissionGrpcService;
+import com.srs.account.repository.PermissionCategoryRepository;
 import com.srs.account.repository.PermissionDslRepository;
+import com.srs.account.repository.PermissionRepository;
 import com.srs.account.repository.RoleDslRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -19,11 +25,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Log4j2
 public class PermissionGrpcServiceImpl implements PermissionGrpcService {
-
+    private final PermissionRepository permissionRepository;
+    private final PermissionCategoryRepository permissionCategoryRepository;
     private final PermissionDslRepository permissionDslRepository;
     private final RoleDslRepository roleDslRepository;
 
-
+    private final PermissionGrpcMapper permissionGrpcMapper;
+    private final PermissionCategoryGrpcMapper permissionCategoryGrpcMapper;
     @Override
     public ListPermissionByUserResponse listPermissionsByUser(FindByIdRequest request) {
         var userId = UUID.fromString(request.getId());
@@ -65,11 +73,41 @@ public class PermissionGrpcServiceImpl implements PermissionGrpcService {
 
     @Override
     public ListResponse listPermissions(ListPermissionsRequest request) {
-        return null;
+        var roleCodes = Arrays.stream(request.getRoleCodes().split(","))
+                .collect(Collectors.toSet());
+
+        var entities = roleCodes.isEmpty()
+                ? permissionRepository.findAll()
+                : permissionDslRepository.findAllByRoleCodes(roleCodes);
+
+        var permissions = entities.stream()
+                .map(permissionGrpcMapper::toGrpcMessage)
+                .map(Any::pack)
+                .collect(Collectors.toList());
+
+        return ListResponse.newBuilder()
+                .setSuccess(true)
+                .setData(ListResponse.Data.newBuilder()
+                        .addAllItems(permissions)
+                        .setTotalElements(permissions.size())
+                        .build())
+                .build();
     }
 
     @Override
     public ListResponse listPermissionCategories(ListPermissionCategoryRequest request) {
-        return null;
+
+        var permissionCategories = permissionCategoryRepository.findAllPermissionCategories();
+
+        return ListResponse.newBuilder()
+                .setSuccess(true)
+                .setData(ListResponse.Data.newBuilder()
+                        .addAllItems(permissionCategories.stream()
+                                .map(permissionCategoryGrpcMapper::toGrpcMessage)
+                                .map(Any::pack)
+                                .collect(Collectors.toList()))
+                        .setTotalElements(permissionCategories.size())
+                        .build())
+                .build();
     }
 }
