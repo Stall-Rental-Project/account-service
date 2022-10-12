@@ -4,6 +4,7 @@ import com.google.protobuf.Any;
 import com.market.common.FindByIdRequest;
 import com.market.common.ListResponse;
 import com.srs.account.*;
+import com.srs.account.entity.PermissionEntity;
 import com.srs.account.grpc.mapper.PermissionCategoryGrpcMapper;
 import com.srs.account.grpc.mapper.PermissionGrpcMapper;
 import com.srs.account.grpc.service.PermissionGrpcService;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -32,6 +34,7 @@ public class PermissionGrpcServiceImpl implements PermissionGrpcService {
 
     private final PermissionGrpcMapper permissionGrpcMapper;
     private final PermissionCategoryGrpcMapper permissionCategoryGrpcMapper;
+
     @Override
     public ListPermissionByUserResponse listPermissionsByUser(FindByIdRequest request) {
         var userId = UUID.fromString(request.getId());
@@ -73,12 +76,15 @@ public class PermissionGrpcServiceImpl implements PermissionGrpcService {
 
     @Override
     public ListResponse listPermissions(ListPermissionsRequest request) {
-        var roleCodes = Arrays.stream(request.getRoleCodes().split(","))
-                .collect(Collectors.toSet());
+        List<PermissionEntity> entities;
+        if (request.getRoleCodes().isBlank()) {
+            entities = permissionRepository.findAll();
+        } else {
+            var roleCodes = Arrays.stream(request.getRoleCodes().split(","))
+                    .collect(Collectors.toSet());
 
-        var entities = roleCodes.isEmpty()
-                ? permissionRepository.findAll()
-                : permissionDslRepository.findAllByRoleCodes(roleCodes);
+            entities = permissionDslRepository.findAllByRoleCodes(roleCodes);
+        }
 
         var permissions = entities.stream()
                 .map(permissionGrpcMapper::toGrpcMessage)

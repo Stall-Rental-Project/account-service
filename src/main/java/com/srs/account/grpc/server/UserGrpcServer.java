@@ -1,9 +1,7 @@
 package com.srs.account.grpc.server;
 
-import com.market.account.GetUserResponse;
-import com.market.account.ListUsersRequest;
-import com.market.account.UpsertUserRequest;
-import com.market.account.UserServiceGrpc;
+import com.google.protobuf.Empty;
+import com.market.account.*;
 import com.market.common.FindByCodeRequest;
 import com.market.common.ListResponse;
 import com.market.common.NoContentResponse;
@@ -36,7 +34,8 @@ public class UserGrpcServer extends UserServiceGrpc.UserServiceImplBase {
                     .build());
             responseObserver.onCompleted();
             throw e;
-        }    }
+        }
+    }
 
     @Override
     public void createUser(UpsertUserRequest request, StreamObserver<NoContentResponse> responseObserver) {
@@ -81,7 +80,8 @@ public class UserGrpcServer extends UserServiceGrpc.UserServiceImplBase {
                     .build());
             responseObserver.onCompleted();
             throw e;
-        }    }
+        }
+    }
 
     @Override
     public void getUser(FindByCodeRequest request, StreamObserver<GetUserResponse> responseObserver) {
@@ -112,7 +112,22 @@ public class UserGrpcServer extends UserServiceGrpc.UserServiceImplBase {
                     .build());
             responseObserver.onCompleted();
             throw e;
-        }    }
+        }
+    }
 
-
+    @Override
+    public void getCurrentUser(Empty request, StreamObserver<GetCurrentUserResponse> responseObserver) {
+        try {
+            var principal = GrpcPrincipalProvider.getGrpcPrincipal();
+            responseObserver.onNext(userGrpcService.getCurrentUser(principal));
+            responseObserver.onCompleted();
+        } catch (Exception e) {
+            responseObserver.onNext(GetCurrentUserResponse.newBuilder()
+                    .setSuccess(false)
+                    .setError(GrpcExceptionUtil.asGrpcError(e))
+                    .build());
+            responseObserver.onCompleted();
+            throw e;
+        }
+    }
 }

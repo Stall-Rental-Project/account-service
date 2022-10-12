@@ -232,6 +232,7 @@ public class UserGrpcServiceImpl implements UserGrpcService {
                 .collect(Collectors.toSet());
 
         var userRoles = userRoleDslRepository.findAllRolesByUserIdsConcatAsString(userIds);
+
         var userRoleMap = new HashMap<UUID, Pair<List<String>, List<String>>>();
         for (var tuple : userRoles) {
             var userId = tuple.get(0, UUID.class);
