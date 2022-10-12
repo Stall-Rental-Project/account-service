@@ -42,13 +42,9 @@ public class UserDslRepository {
         }
 
         if (StringUtils.isNotBlank(request.getSearchTerm())) {
-            if (request.getSearchEmailOnly()) {
-                baseQuery.where(user.email.containsIgnoreCase(request.getSearchTerm()));
-            } else {
                 baseQuery.where((user.email.containsIgnoreCase(request.getSearchTerm()))
                         .or(user.firstName.containsIgnoreCase(request.getSearchTerm()))
                         .or(user.lastName.containsIgnoreCase(request.getSearchTerm())));
-            }
         }
 
         if (request.hasStatus()) {
