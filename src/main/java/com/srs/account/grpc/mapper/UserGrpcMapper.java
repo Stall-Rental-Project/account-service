@@ -1,6 +1,6 @@
 package com.srs.account.grpc.mapper;
 
-import com.market.account.User;
+import com.srs.account.User;
 import com.srs.account.entity.UserEntity;
 import com.srs.account.util.UserUtil;
 import com.srs.proto.mapper.BaseGrpcMapper;

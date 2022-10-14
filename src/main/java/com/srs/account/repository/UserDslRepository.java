@@ -1,7 +1,7 @@
 package com.srs.account.repository;
 
-import com.market.account.ListUsersRequest;
-import com.market.common.PageRequest;
+import com.srs.account.ListUsersRequest;
+import com.srs.common.PageRequest;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.jpa.impl.JPAQuery;

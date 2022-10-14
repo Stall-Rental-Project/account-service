@@ -1,13 +1,12 @@
 package com.srs.account.grpc.server;
 
-import com.market.common.FindByIdRequest;
-import com.market.common.ListResponse;
 import com.srs.account.ListPermissionByUserResponse;
 import com.srs.account.ListPermissionCategoryRequest;
 import com.srs.account.ListPermissionsRequest;
 import com.srs.account.PermissionServiceGrpc;
 import com.srs.account.grpc.service.PermissionGrpcService;
-import com.srs.proto.intercepter.AuthGrpcInterceptor;
+import com.srs.common.FindByIdRequest;
+import com.srs.common.ListResponse;
 import com.srs.proto.util.GrpcExceptionUtil;
 import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;

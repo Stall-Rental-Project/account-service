@@ -1,6 +1,6 @@
 package com.srs.account.grpc.util;
 
-import com.market.common.PageRequest;
+import com.srs.common.PageRequest;
 import com.srs.common.CommonConstant;
 
 import java.util.List;

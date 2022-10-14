@@ -1,14 +1,14 @@
 package com.srs.account.grpc.service;
 
 
-import com.market.account.GetCurrentUserResponse;
-import com.market.account.GetUserResponse;
-import com.market.account.ListUsersRequest;
-import com.market.account.UpsertUserRequest;
-import com.market.common.FindByCodeRequest;
-import com.market.common.ListResponse;
-import com.market.common.NoContentResponse;
-import com.market.common.PageResponse;
+import com.srs.account.GetCurrentUserResponse;
+import com.srs.account.GetUserResponse;
+import com.srs.account.ListUsersRequest;
+import com.srs.account.UpsertUserRequest;
+import com.srs.common.FindByCodeRequest;
+import com.srs.common.ListResponse;
+import com.srs.common.NoContentResponse;
+import com.srs.common.PageResponse;
 import com.srs.proto.dto.GrpcPrincipal;
 
 public interface UserGrpcService {

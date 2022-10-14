@@ -1,7 +1,7 @@
 package com.srs.account.grpc.service;
 
-import com.market.common.FindByIdRequest;
-import com.market.common.ListResponse;
+import com.srs.common.FindByIdRequest;
+import com.srs.common.ListResponse;
 import com.srs.account.ListPermissionByUserResponse;
 import com.srs.account.ListPermissionCategoryRequest;
 import com.srs.account.ListPermissionsRequest;
