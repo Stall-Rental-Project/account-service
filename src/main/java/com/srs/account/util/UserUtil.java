@@ -1,6 +1,6 @@
 package com.srs.account.util;
 
-import com.market.market.MarketType;
+import com.srs.market.MarketType;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 

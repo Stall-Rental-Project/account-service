@@ -1,7 +1,7 @@
 package com.srs.account.util.validator;
 
-import com.market.account.UpsertUserRequest;
-import com.market.common.NoContentResponse;
+import com.srs.account.UpsertUserRequest;
+import com.srs.common.NoContentResponse;
 import com.srs.proto.dto.GrpcPrincipal;
 
 /**

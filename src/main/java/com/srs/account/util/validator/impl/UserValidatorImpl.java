@@ -1,9 +1,9 @@
 package com.srs.account.util.validator.impl;
 
-import com.market.account.UpsertUserRequest;
-import com.market.common.Error;
-import com.market.common.NoContentResponse;
-import com.market.common.Status;
+import com.srs.account.UpsertUserRequest;
+import com.srs.common.Error;
+import com.srs.common.NoContentResponse;
+import com.srs.common.Status;
 import com.srs.account.repository.RoleRepository;
 import com.srs.account.util.validator.BaseValidator;
 import com.srs.account.util.validator.UserValidator;
