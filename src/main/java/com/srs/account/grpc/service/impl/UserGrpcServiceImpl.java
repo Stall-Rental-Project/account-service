@@ -277,7 +277,7 @@ public class UserGrpcServiceImpl implements UserGrpcService {
 
         var user = userRepository.findById(userId)
                 .orElseThrow(() -> new ObjectNotFoundException("User not found"));
-
+        userRoleRepository.deleteByUserId(user.getUserId());
         userRepository.delete(user);
 
         return NoContentResponse.newBuilder()
