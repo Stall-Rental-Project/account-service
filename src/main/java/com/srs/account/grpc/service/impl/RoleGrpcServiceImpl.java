@@ -231,6 +231,7 @@ public class RoleGrpcServiceImpl implements RoleGrpcService {
                     .build());
         }
 
+        rolePermissionRepository.deleteByRoleId(roleId);
         roleRepository.delete(role);
 
 
