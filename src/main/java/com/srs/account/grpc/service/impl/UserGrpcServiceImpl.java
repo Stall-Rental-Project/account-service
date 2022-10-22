@@ -2,10 +2,6 @@ package com.srs.account.grpc.service.impl;
 
 import com.google.protobuf.Any;
 import com.srs.account.*;
-import com.srs.common.FindByCodeRequest;
-import com.srs.common.ListResponse;
-import com.srs.common.NoContentResponse;
-import com.srs.common.PageResponse;
 import com.srs.account.common.Constant;
 import com.srs.account.entity.PermissionEntity;
 import com.srs.account.entity.RoleEntity;
@@ -17,13 +13,13 @@ import com.srs.account.grpc.util.PageUtil;
 import com.srs.account.repository.*;
 import com.srs.account.util.UserUtil;
 import com.srs.account.util.validator.UserValidator;
+import com.srs.common.FindByCodeRequest;
+import com.srs.common.ListResponse;
+import com.srs.common.NoContentResponse;
+import com.srs.common.PageResponse;
 import com.srs.common.dto.Pair;
 import com.srs.common.exception.ObjectNotFoundException;
-import com.srs.proto.common.GrpcAutoBot;
 import com.srs.proto.dto.GrpcPrincipal;
-import com.srs.proto.provider.GrpcPrincipalProvider;
-import com.srs.proto.util.GrpcExceptionUtil;
-import io.grpc.stub.StreamObserver;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -54,7 +50,44 @@ public class UserGrpcServiceImpl implements UserGrpcService {
 
     @Override
     @Transactional
-    public NoContentResponse createUser(UpsertUserRequest request, GrpcPrincipal principal) throws Exception {
+    public NoContentResponse createUser(UpsertUserRequest request, GrpcPrincipal principal) {
+        var validationResult = userValidator.validateUpdateUser(request, principal);
+
+        if (!validationResult.getSuccess()) {
+            return validationResult;
+        }
+//        var publicUserRoleId = userRoleDslRepository.findPublicUserRoleId()
+//                .orElseThrow(() -> new ObjectNotFoundException("Public User role not found"));
+
+        var user = new UserEntity();
+        var addedUserRoles = new ArrayList<UserRoleEntity>();
+
+        for (var roleIdString : request.getRoleIdsList()) {
+            if (StringUtils.isBlank(roleIdString)) {
+                continue;
+            }
+
+            var roleId = UUID.fromString(roleIdString);
+
+            addedUserRoles.add(UserRoleEntity.from(user, new RoleEntity(roleId)));
+
+        }
+        this.createUser(user, request);
+
+        userRepository.save(user);
+
+        if (addedUserRoles.size() > 0) {
+            userRoleRepository.saveAll(addedUserRoles);
+        }
+
+        return NoContentResponse.newBuilder()
+                .setSuccess(true)
+                .build();
+    }
+
+    @Override
+    @Transactional
+    public NoContentResponse updateUser(UpsertUserRequest request, GrpcPrincipal principal) throws Exception {
         var validationResult = userValidator.validateUpdateUser(request, principal);
 
         if (!validationResult.getSuccess()) {
@@ -91,53 +124,14 @@ public class UserGrpcServiceImpl implements UserGrpcService {
         if (hasChangedOnUser) {
             userRepository.save(user);
         }
-
+        if (addedUserRoles.size() > 0) {
+            userRoleRepository.saveAll(addedUserRoles);
+        }
 
         if (removedRoleIds.size() > 0) {
             userRoleRepository.deleteAllByUserIdAndRoleIds(user.getUserId(), removedRoleIds);
         }
-        if (addedUserRoles.size() > 0) {
-            userRoleRepository.saveAll(addedUserRoles);
-        }
-        if (addedUserRoles.size() > 0) {
-            userRoleRepository.saveAll(addedUserRoles);
-        }
 
-        return NoContentResponse.newBuilder()
-                .setSuccess(true)
-                .build();
-    }
-
-    @Override
-    public NoContentResponse updateUser(UpsertUserRequest request, GrpcPrincipal principal) throws Exception {
-        var validationResult = userValidator.validateUpdateUser(request, principal);
-
-        if (!validationResult.getSuccess()) {
-            return validationResult;
-        }
-//        var publicUserRoleId = userRoleDslRepository.findPublicUserRoleId()
-//                .orElseThrow(() -> new ObjectNotFoundException("Public User role not found"));
-
-        var user = new UserEntity();
-        var addedUserRoles = new ArrayList<UserRoleEntity>();
-
-        for (var roleIdString : request.getRoleIdsList()) {
-            if (StringUtils.isBlank(roleIdString)) {
-                continue;
-            }
-
-            var roleId = UUID.fromString(roleIdString);
-
-            addedUserRoles.add(UserRoleEntity.from(user, new RoleEntity(roleId)));
-
-        }
-        this.updateUser(user, request);
-
-        userRepository.save(user);
-
-        if (addedUserRoles.size() > 0) {
-            userRoleRepository.saveAll(addedUserRoles);
-        }
 
         return NoContentResponse.newBuilder()
                 .setSuccess(true)
@@ -285,6 +279,16 @@ public class UserGrpcServiceImpl implements UserGrpcService {
                 .build();
     }
 
+    private void createUser(UserEntity entity, UpsertUserRequest request) {
+        entity.setFirstName(request.getFirstName());
+        entity.setMiddleName(request.getMiddleName());
+        entity.setLastName(request.getLastName());
+        entity.setStatus(request.getStatusValue());
+        entity.setEmail(request.getEmail());
+        entity.setPassword("P1@zz@2022");
+        var marketCodes = UserUtil.grpcToNativeMarketCodes(request.getMarketCodesList());
+        entity.setMarketCodes(marketCodes);
+    }
 
     private boolean updateUser(UserEntity entity, UpsertUserRequest request) {
         boolean hasChanged = false;
@@ -303,7 +307,10 @@ public class UserGrpcServiceImpl implements UserGrpcService {
             entity.setLastName(request.getLastName());
             hasChanged = true;
         }
-
+        if (isNotBlank(request.getEmail()) && !Objects.equals(entity.getEmail(), request.getEmail())) {
+            entity.setEmail(request.getEmail());
+            hasChanged = true;
+        }
         if (entity.getStatus() != request.getStatusValue()) {
             entity.setStatus(request.getStatusValue());
             hasChanged = true;

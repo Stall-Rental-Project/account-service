@@ -5,13 +5,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 import java.util.UUID;
 
-/**
- * @author duynt on 2/17/22
- */
+@Repository
 public interface UserRoleRepository extends JpaRepository<UserRoleEntity, UUID> {
     @Modifying
     @Query("delete from UserRoleEntity ur " +
