@@ -86,7 +86,7 @@ public class RoleValidatorImpl extends BaseValidator implements RoleValidator {
             return NoContentResponse.newBuilder()
                     .setSuccess(false)
                     .setError(Error.newBuilder()
-                            .setCode(ErrorCode.INVALID_PARAMETERS)
+                            .setCode(ErrorCode.ROLE_ALREADY_EXISTS)
                             .setMessage("Role is already in use, cannot inactivate")
                             .build())
                     .build();
