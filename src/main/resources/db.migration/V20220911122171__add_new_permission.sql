@@ -17,4 +17,3 @@ insert into role_permission(role_id, permission_id)
 values((select role_id from role where code = 'SYSTEM_ADMIN'), (select permission_id from permission where code = 'MARKET_LEASE_VIEW'));
 insert into role_permission(role_id, permission_id )
 values((select role_id from role where code = 'PUBLIC'), (select permission_id from permission where code = 'MARKET_LEASE_VIEW'));
-\
