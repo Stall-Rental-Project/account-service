@@ -33,13 +33,6 @@ public class UserDslRepository {
     public Page<UserEntity> findAll(ListUsersRequest request, GrpcPrincipal principal) {
         JPAQuery<?> baseQuery = queryFactory.from(user);
 
-        if (!request.getIncludePublic()) {
-            baseQuery.where(queryFactory.selectZero()
-                    .from(userRole)
-                    .where(userRole.user.userId.eq(user.userId))
-                    .where(userRole.role.code.eq("PUBLIC_USERS"))
-                    .notExists());
-        }
 
         if (StringUtils.isNotBlank(request.getSearchTerm())) {
                 baseQuery.where((user.email.containsIgnoreCase(request.getSearchTerm()))

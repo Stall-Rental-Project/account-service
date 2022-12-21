@@ -19,6 +19,7 @@ import io.jsonwebtoken.impl.DefaultClaims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.temporal.ChronoUnit;
@@ -37,12 +38,17 @@ public class AuthGrpcServiceImpl implements AuthGrpcService {
     private final RoleRepository roleRepository;
 
     private final PermissionRepository permissionRepository;
-
+    private final PasswordEncoder passwordEncoder;
     @Override
     public LoginResponse login(LoginRequest request) {
         var email = request.getUsername().trim().toLowerCase();
 
         var user = userRepository.findByEmail(email).orElse(null);
+        if (user != null) {
+            if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+                throw new RuntimeException("Invalid username or password");
+            }
+        }
 
         return this.issueToken(user);
     }

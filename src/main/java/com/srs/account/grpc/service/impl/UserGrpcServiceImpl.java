@@ -24,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,6 +48,7 @@ public class UserGrpcServiceImpl implements UserGrpcService {
     private final UserValidator userValidator;
 
     private final Logger log = LoggerFactory.getLogger(UserGrpcServiceImpl.class);
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
@@ -56,8 +58,8 @@ public class UserGrpcServiceImpl implements UserGrpcService {
         if (!validationResult.getSuccess()) {
             return validationResult;
         }
-//        var publicUserRoleId = userRoleDslRepository.findPublicUserRoleId()
-//                .orElseThrow(() -> new ObjectNotFoundException("Public User role not found"));
+        var publicUserRoleId = userRoleDslRepository.findPublicUserRoleId()
+                .orElseThrow(() -> new ObjectNotFoundException("Public User role not found"));
 
         var user = new UserEntity();
         var addedUserRoles = new ArrayList<UserRoleEntity>();
@@ -66,17 +68,21 @@ public class UserGrpcServiceImpl implements UserGrpcService {
             if (StringUtils.isBlank(roleIdString)) {
                 continue;
             }
-
             var roleId = UUID.fromString(roleIdString);
-
+            if (roleId.equals(publicUserRoleId)) {
+                continue; // We cannot assign public_user role
+            }
             addedUserRoles.add(UserRoleEntity.from(user, new RoleEntity(roleId)));
-
         }
         this.createUser(user, request);
 
         userRepository.save(user);
 
         if (addedUserRoles.size() > 0) {
+            userRoleRepository.saveAll(addedUserRoles);
+        } else {
+            //if don't have any role. Default User Role
+            addedUserRoles.add(UserRoleEntity.from(user, new RoleEntity(publicUserRoleId)));
             userRoleRepository.saveAll(addedUserRoles);
         }
 
@@ -96,7 +102,11 @@ public class UserGrpcServiceImpl implements UserGrpcService {
 
         var user = userRepository.findById(UUID.fromString(request.getUserId()))
                 .orElseThrow(() -> new ObjectNotFoundException("User not found"));
+
         var assignedRoleIds = userRoleDslRepository.findAllRoleIdsByUserId(user.getUserId());
+
+        var publicUserRoleId = userRoleDslRepository.findPublicUserRoleId()
+                .orElseThrow(() -> new ObjectNotFoundException("Public User role not found"));
 
         var removedRoleIds = new HashSet<UUID>();
         var addedUserRoles = new ArrayList<UserRoleEntity>();
@@ -106,7 +116,9 @@ public class UserGrpcServiceImpl implements UserGrpcService {
                 continue;
             }
             var roleId = UUID.fromString(roleIdString);
-
+            if (roleId.equals(publicUserRoleId)) {
+                continue; // We cannot assign public_user role
+            }
             if (!assignedRoleIds.contains(roleId)) {
                 addedUserRoles.add(UserRoleEntity.from(user, new RoleEntity(roleId)));
             }
@@ -115,6 +127,9 @@ public class UserGrpcServiceImpl implements UserGrpcService {
 
         for (var roleId : assignedRoleIds) {
             if (!request.getRoleIdsList().contains(roleId.toString())) {
+                removedRoleIds.add(roleId);
+            }
+            if(roleId.equals(publicUserRoleId)&&addedUserRoles.size()>0){
                 removedRoleIds.add(roleId);
             }
         }
@@ -285,7 +300,7 @@ public class UserGrpcServiceImpl implements UserGrpcService {
         entity.setLastName(request.getLastName());
         entity.setStatus(request.getStatusValue());
         entity.setEmail(request.getEmail());
-        entity.setPassword("P1@zz@2022");
+        entity.setPassword(passwordEncoder.encode(Constant.passwordDefault));
         var marketCodes = UserUtil.grpcToNativeMarketCodes(request.getMarketCodesList());
         entity.setMarketCodes(marketCodes);
     }

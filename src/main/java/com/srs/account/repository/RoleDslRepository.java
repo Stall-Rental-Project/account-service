@@ -47,10 +47,6 @@ public class RoleDslRepository {
     public Page<RoleEntity> findAll(ListRoleRequest request) {
         JPAQuery<?> baseQuery = queryFactory.from(role);
 
-        if (!request.getIncludePublic()) {
-            baseQuery.where(role.code.ne("PUBLIC_USERS"));
-        }
-
         if (StringUtils.isNotBlank(request.getName())) {
             baseQuery.where(role.name.containsIgnoreCase(request.getName())
                     .or(role.description.containsIgnoreCase(request.getName()))
