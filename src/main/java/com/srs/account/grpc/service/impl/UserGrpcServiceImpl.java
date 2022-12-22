@@ -146,6 +146,10 @@ public class UserGrpcServiceImpl implements UserGrpcService {
         if (removedRoleIds.size() > 0) {
             userRoleRepository.deleteAllByUserIdAndRoleIds(user.getUserId(), removedRoleIds);
         }
+        assignedRoleIds.removeAll(removedRoleIds);
+        if(assignedRoleIds.size()>0){
+            userRoleRepository.save(UserRoleEntity.from(user, new RoleEntity(publicUserRoleId)));
+        }
 
 
         return NoContentResponse.newBuilder()
