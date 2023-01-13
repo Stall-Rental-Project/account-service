@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Renewal Reminder</title>
+</head>
+<body>
+<div style="min-height: 270px; text-align: left; padding-left: 0; max-width: 750px">
+    <div id="content">
+        <div id="main">
+            <p>Hi ${firstName} ${lastName},</p>
+
+            <p>Congratulations! Your ${applicationType} ${applicationNumber} has been approved. Please proceed to the
+                City Hall - City Treasurer's Office to pay for the Application, Miscellaneous and Vending Fees.
+            </p>
+
+            <br/>
+
+            <p>[THIS IS AN AUTOMATED MESSAGE - PLEASE DO NOT REPLY TO THIS EMAIL]</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
