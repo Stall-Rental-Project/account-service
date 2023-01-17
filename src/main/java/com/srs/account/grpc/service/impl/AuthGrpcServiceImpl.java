@@ -1,5 +1,6 @@
 package com.srs.account.grpc.service.impl;
 
+import com.srs.account.util.CacheUtil;
 import com.srs.common.Error;
 import com.srs.common.ErrorCode;
 import com.srs.account.AuthResponse;
@@ -39,6 +40,8 @@ public class AuthGrpcServiceImpl implements AuthGrpcService {
 
     private final PermissionRepository permissionRepository;
     private final PasswordEncoder passwordEncoder;
+
+    private final CacheUtil cacheUtil;
     @Override
     public LoginResponse login(LoginRequest request) {
         var email = request.getUsername().trim().toLowerCase();
@@ -109,6 +112,8 @@ public class AuthGrpcServiceImpl implements AuthGrpcService {
                 .addClaims(additionalClaims)
                 .signWith(SignatureAlgorithm.HS256, GrpcConstant.JWT_SIGNING_KEY)
                 .compact();
+
+        cacheUtil.saveQcToken(token);
 
         return LoginResponse.newBuilder()
                 .setSuccess(true)
