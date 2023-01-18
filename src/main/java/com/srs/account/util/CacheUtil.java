@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
+import java.util.List;
 
 
 @Component
@@ -22,5 +23,9 @@ public class CacheUtil {
 
     public void evictQcToken() {
         redis.evict("ACCESS_TOKEN", String.class);
+    }
+
+    public void saveListToken(List<String> tokens) {
+        redis.put("LIST_TOKEN", tokens, Duration.ofMinutes(15));
     }
 }

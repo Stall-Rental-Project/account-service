@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
 
@@ -113,7 +114,7 @@ public class AuthGrpcServiceImpl implements AuthGrpcService {
                 .signWith(SignatureAlgorithm.HS256, GrpcConstant.JWT_SIGNING_KEY)
                 .compact();
 
-        cacheUtil.saveQcToken(token);
+        cacheUtil.saveListToken(roles.stream().collect(Collectors.toList()));
 
         return LoginResponse.newBuilder()
                 .setSuccess(true)
