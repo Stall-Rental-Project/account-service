@@ -1,86 +1,65 @@
-set search_path to emarketconfig;
+set search_path to mhmarket;
 
 DELETE
-FROM ms_properties
+FROM properties
 WHERE application = 'account-service'
-  AND profile = 'dev';
+  AND profile = 'dev' ;
 
 -- Port
-INSERT INTO ms_properties (application, profile, label, key, value)
+INSERT INTO properties (application, profile, label, "KEY", "VALUE")
 VALUES ('account-service', 'dev', 'master', 'server.port', '8080');
-INSERT INTO ms_properties (application, profile, label, key, value)
-VALUES ('account-service', 'dev', 'master', 'grpc.server.port', '6565');
+INSERT INTO properties (application, profile, label, "KEY", "VALUE")
+VALUES ('account-service', 'dev', 'master', 'grpc.server.port', '9565');
 
 -- Datasource
-INSERT INTO ms_properties (application, profile, label, key, value)
+INSERT INTO properties (application, profile, label, "KEY", "VALUE")
 VALUES ('account-service', 'dev', 'master', 'spring.datasource.url',
-        'jdbc:postgresql://192.168.200.16:5432/emarketaccount');
-INSERT INTO ms_properties (application, profile, label, key, value)
+        'jdbc:postgresql://mh-account.cceyhlcvjfnk.us-east-1.rds.amazonaws.com:5432/mhaccount');
+INSERT INTO properties (application, profile, label, "KEY", "VALUE")
 VALUES ('account-service', 'dev', 'master', 'spring.datasource.username', 'postgres');
-INSERT INTO ms_properties (application, profile, label, key, value)
-VALUES ('account-service', 'dev', 'master', 'spring.datasource.password', '2110');
-INSERT INTO ms_properties (application, profile, label, key, value)
-VALUES ('account-service', 'dev', 'master', 'spring.datasource.hikari.schema', 'emarket');
+INSERT INTO properties (application, profile, label, "KEY", "VALUE")
+VALUES ('account-service', 'dev', 'master', 'spring.datasource.password', '5RQI9yPAExiQUy7gCaXX');
+INSERT INTO properties (application, profile, label, "KEY", "VALUE")
+VALUES ('account-service', 'dev', 'master', 'spring.datasource.hikari.schema', 'mhmarket');
 
-INSERT INTO ms_properties (application, profile, label, key, value)
-VALUES ('account-service', 'dev', 'master', 'spring.jpa.properties.hibernate.default_schema', 'emarket');
-INSERT INTO ms_properties (application, profile, label, key, value)
-VALUES ('account-service', 'dev', 'master', 'spring.jpa.properties.hibernate.metadata_builder_contributor',
-        'com.banvien.emarket.account.config.QueryDslContributor');
+INSERT INTO properties (application, profile, label, "KEY", "VALUE")
+VALUES ('account-service', 'dev', 'master', 'spring.jpa.properties.hibernate.default_schema', 'mhmarket');
+--
+INSERT INTO properties (application, profile, label, "KEY", "VALUE")
+VALUES ('account-service', 'dev', 'master', 'spring.kafka.bootstrap-servers', '103.162.20.152:9092');
+INSERT INTO properties (application, profile, label, "KEY", "VALUE")
+VALUES ('account-service', 'dev', 'master', 'spring.kafka.consumer.group-id', 'account-service-group');
+INSERT INTO properties (application, profile, label, "KEY", "VALUE")
+VALUES ('account-service', 'dev', 'master', 'spring.jpa.properties.hibernate.metadata_builder_contributor', 'com.srs.account.config.QueryDslContributor');
 
-INSERT INTO ms_properties (application, profile, label, key, value)
-VALUES ('account-service', 'dev', 'master', 'spring.redis.host', '192.168.200.16');
-INSERT INTO ms_properties (application, profile, label, key, value)
+
+INSERT INTO properties (application, profile, label, "KEY", "VALUE")
+VALUES ('account-service', 'dev', 'master', 'spring.redis.host', '103.162.20.152');
+INSERT INTO properties (application, profile, label, "KEY", "VALUE")
 VALUES ('account-service', 'dev', 'master', 'spring.redis.port', '6379');
-INSERT INTO ms_properties (application, profile, label, key, value)
-VALUES ('account-service', 'dev', 'master', 'spring.redis.password', '2110');
 
-INSERT INTO ms_properties (application, profile, label, key, value)
-VALUES ('account-service', 'dev', 'master', 'spring.kafka.bootstrap-servers', '192.168.200.45:32107');
-INSERT INTO ms_properties (application, profile, label, key, value)
-VALUES ('account-service', 'dev', 'master', 'spring.kafka.consumer.group-id', 'emarket-account-service-group');
+INSERT INTO properties (application, profile, label, "KEY", "VALUE")
+VALUES ('account-service', 'dev', 'master', 'spring.mail.host', 'smtp.gmail.com');
+INSERT INTO properties (application, profile, label, "KEY", "VALUE")
+VALUES ('account-service', 'dev', 'master', 'spring.mail.port', '587');
+INSERT INTO properties (application, profile, label, "KEY", "VALUE")
+VALUES ('account-service', 'dev', 'master', 'spring.mail.username', 'hoanggg2110@gmail.com');
 
--- AWS S3
-INSERT INTO ms_properties (application, profile, label, key, value)
-VALUES ('account-service', 'dev', 'master', 'aws.s3.bucket', 'bv-emarket');
-INSERT INTO ms_properties (application, profile, label, key, value)
-VALUES ('account-service', 'dev', 'master', 'aws.s3.content-category', 'dev');
-INSERT INTO ms_properties (application, profile, label, key, value)
-VALUES ('account-service', 'dev', 'master', 'aws.ses.default-sender', 'emarket@oplacrm.com');
-INSERT INTO ms_properties (application, profile, label, key, value)
-VALUES ('account-service', 'dev', 'master', 'aws.ses.api-base-url', 'https://api-dev-emarket.banvien.com.vn');
-INSERT INTO ms_properties (application, profile, label, key, value)
-VALUES ('account-service', 'dev', 'master', 'aws.ses.web-base-url', 'https://dev-emarket.banvien.com.vn');
-INSERT INTO ms_properties (application, profile, label, key, value)
-VALUES ('account-service', 'dev', 'master', 'aws.ses.default-cc-emails',
-        'man.dang-thi@banvien.com.vn');
 
--- Executor
-INSERT INTO ms_properties (application, profile, label, key, value)
-VALUES ('account-service', 'dev', 'master', 'executor.core-threads', '4');
-INSERT INTO ms_properties (application, profile, label, key, value)
-VALUES ('account-service', 'dev', 'master', 'executor.max-threads', '20');
-INSERT INTO ms_properties (application, profile, label, key, value)
-VALUES ('account-service', 'dev', 'master', 'executor.keep-alive-secs', '10');
+INSERT INTO properties (application, profile, label, "KEY", "VALUE")
+VALUES ('account-service', 'dev', 'master', 'spring.mail.default-cc-email', 'hoanggg2110@gmail.com,ngohoang211020@gmail.com');
+INSERT INTO properties (application, profile, label, "KEY", "VALUE")
+VALUES ('account-service', 'dev', 'master', 'spring.mail.default-sender', 'hoanggg2110@gmail.com');
 
--- Task Scheduler
-INSERT INTO ms_properties (application, profile, label, key, value)
-VALUES ('account-service', 'dev', 'master', 'task-scheduler.pool-size', '2');
+INSERT INTO properties (application, profile, label, "KEY", "VALUE")
+VALUES ('account-service', 'dev', 'master', 'spring.mail.password', 'ulypdgvuguptufdj');
+INSERT INTO properties (application, profile, label, "KEY", "VALUE")
+VALUES ('account-service', 'dev', 'master', 'spring.mail.properties.mail.transport.protocol', 'stmt');
+INSERT INTO properties (application, profile, label, "KEY", "VALUE")
+VALUES ('account-service', 'dev', 'master', 'spring.mail.properties.mail.smtp.auth', 'true');
 
--- Application customized config
-INSERT INTO ms_properties (application, profile, label, key, value)
-VALUES ('account-service', 'dev', 'master', 'signatory.signature-max-size', '2097152');
 
-INSERT INTO ms_properties (application, profile, label, key, value)
-VALUES ('account-service', 'dev', 'master', 'qceservice.app-id',
-        '5e14eda74c26431e64de63352401df69.unifysyscontrol.com');
-INSERT INTO ms_properties (application, profile, label, key, value)
-VALUES ('account-service', 'dev', 'master', 'qceservice.app-secret',
-        '75c76ed99ff442f1797931604647b004b091b0f83bec0073d12cc1c589f18791');
-INSERT INTO ms_properties (application, profile, label, key, value)
-VALUES ('account-service', 'dev', 'master', 'qceservice.app-endpoint', 'https://qaqclb.unifysyscontrol.com/web-ums');
-INSERT INTO ms_properties (application, profile, label, key, value)
-VALUES ('account-service', 'dev', 'master', 'qceservice.api-max-attempts', '3');
-
-INSERT INTO ms_properties (application, profile, label, key, value)
-VALUES ('account-service', 'dev', 'master', 'emarket.api-base-url', 'https://api-dev-emarket.banvien.com.vn');
+INSERT INTO properties (application, profile, label, "KEY", "VALUE")
+VALUES ('account-service', 'dev', 'master', 'spring.mail.properties.mail.smtp.starttls.enable', 'true');
+INSERT INTO properties (application, profile, label, "KEY", "VALUE")
+VALUES ('account-service', 'dev', 'master', 'spring.mail.properties.mail.stmt.ssl.enable', 'true');

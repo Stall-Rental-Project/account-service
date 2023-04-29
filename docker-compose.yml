@@ -1,19 +1,19 @@
-version: '3.8'
+version: '3.7'
 services:
   account-service-dev:
-    image: mhmarket/account:latest
+    image: 211020/mhmarket-account:latest
     container_name: account-service
     ports:
       - "9565:9565"
     environment:
-      CLOUD_CONFIG_URL: http://103.162.20.141:8888
+      CLOUD_CONFIG_URL: http://103.162.20.152:8082
       CLOUD_CONFIG_PROFILE: dev
       CLOUD_CONFIG_LABEL: master
     restart: unless-stopped
     networks:
       - mh-network
     dns:
-      - 192.168.200.4
+      - 103.162.20.4
       - 8.8.8.8
 networks:
   mh-network:

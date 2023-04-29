@@ -1,0 +1,1 @@
+user=postgres password=5RQI9yPAExiQUy7gCaXX host=mh-account.cceyhlcvjfnk.us-east-1.rds.amazonaws.com port=5432 dbname=mhaccount
