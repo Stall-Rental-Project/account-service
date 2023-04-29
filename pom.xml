@@ -27,6 +27,16 @@
             <name>My Repository</name>
             <url>file://root/.m2/repository/</url>
         </repository>
+        <repository>
+            <id>nexus-releases</id>
+            <name>maven-releases</name>
+            <url>https://5166-116-103-68-223.ngrok-free.app /repository/maven-releases/</url>
+        </repository>
+        <repository>
+            <id>nexus-snapshots</id>
+            <name>maven-snapshots</name>
+            <url>https://5166-116-103-68-223.ngrok-free.app /repository/maven-snapshots/</url>
+        </repository>
     </repositories>
     <dependencies>
         <dependency>
@@ -67,12 +77,12 @@
         <repository>
             <id>nexus-releases</id>
             <name>maven-releases</name>
-            <url>http://http://103.162.20.152:8081/repository/maven-releases/</url>
+            <url>https://5166-116-103-68-223.ngrok-free.app /repository/maven-releases/</url>
         </repository>
         <snapshotRepository>
             <id>nexus-snapshots</id>
             <name>maven-snapshots</name>
-            <url>http://103.162.20.152:8081/repository/maven-snapshots/</url>
+            <url>https://5166-116-103-68-223.ngrok-free.app /repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
