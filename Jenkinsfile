@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
              VERSION                = 'latest'
-             PROJECT                = 'MHmarket'
+             PROJECT                = 'mhmarket'
              DOCKERHUB_CREDENTIALS  = credentials('dockerhub')
              ENVIRONMENT            = 'dev'
              SERVICE                = 'account'
