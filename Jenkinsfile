@@ -8,7 +8,12 @@ pipeline {
              SERVICE                = 'account'
     }
     stages {
-
+        stage("Cloud Config") {
+                steps {
+                    sh 'chmod 700 run_dbscript_${ENVIRONMENT}.sh'
+                    sh './run_dbscript_${ENVIRONMENT}.sh'
+                }
+        }
         stage("Maven build") {
                     agent {
                         docker {
