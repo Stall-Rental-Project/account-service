@@ -10,7 +10,7 @@ pipeline {
     stages {
         stage("Cloud Config") {
                 steps {
-                    sh 'RUN apt-get update && apt-get install -y postgresql-client'
+                    sh 'apt-get update && apt-get install -y postgresql-client'
                     sh 'chmod 700 run_dbscript_${ENVIRONMENT}.sh'
                     sh './run_dbscript_${ENVIRONMENT}.sh'
                 }
