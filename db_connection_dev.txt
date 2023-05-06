@@ -1,1 +1,1 @@
-user=postgres password=5RQI9yPAExiQUy7gCaXX host=mh-account.cceyhlcvjfnk.us-east-1.rds.amazonaws.com port=5432 dbname=mhaccount
+user=postgres password=123456 host=103.162.20.152 port=5432 dbname=mhmarketconfig

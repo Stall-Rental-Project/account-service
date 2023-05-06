@@ -12,9 +12,6 @@ services:
     restart: unless-stopped
     networks:
       - mh-network
-    dns:
-      - 103.162.20.4
-      - 8.8.8.8
 networks:
   mh-network:
     driver: bridge
