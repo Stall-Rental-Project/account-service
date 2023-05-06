@@ -14,11 +14,11 @@ VALUES ('account-service', 'dev', 'master', 'grpc.server.port', '9565');
 -- Datasource
 INSERT INTO properties (application, profile, label, "KEY", "VALUE")
 VALUES ('account-service', 'dev', 'master', 'spring.datasource.url',
-        'jdbc:postgresql://mh-account.cceyhlcvjfnk.us-east-1.rds.amazonaws.com:5432/mhaccount');
+        'jdbc:postgresql://103.162.20.152:5432/mhmarketaccount');
 INSERT INTO properties (application, profile, label, "KEY", "VALUE")
 VALUES ('account-service', 'dev', 'master', 'spring.datasource.username', 'postgres');
 INSERT INTO properties (application, profile, label, "KEY", "VALUE")
-VALUES ('account-service', 'dev', 'master', 'spring.datasource.password', '5RQI9yPAExiQUy7gCaXX');
+VALUES ('account-service', 'dev', 'master', 'spring.datasource.password', '123456');
 INSERT INTO properties (application, profile, label, "KEY", "VALUE")
 VALUES ('account-service', 'dev', 'master', 'spring.datasource.hikari.schema', 'mhmarket');
 
