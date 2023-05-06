@@ -1,3 +1,4 @@
+CREATE SCHEMA IF NOT EXISTS mhmarket;
 set search_path to mhmarket;
 create extension if not exists pgcrypto;
 
