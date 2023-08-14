@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: account
+  namespace: mhmarket
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: account
+  template:
+    metadata:
+      labels:
+        app: account
+    spec:
+      restartPolicy: Always
+      containers:
+        - name: account
+          image: 211020/mhmarket-account:latest
+          imagePullPolicy: Always
+          env:
+            - name: PORT
+              value: "8080"
+            - name: CLOUD_CONFIG_URL
+              value: "http://cloud-config:8080"
+            - name: CLOUD_CONFIG_PROFILE
+              value: "dev"
+            - name: CLOUD_CONFIG_LABEL
+              value: "master"
+          ports:
+            - containerPort: 9565
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: account
+  namespace: mhmarket
+spec:
+  type: ClusterIP
+  selector:
+    app: account
+  ports:
+    - name: grpc
+      port: 9565
+      targetPort: 9565
